@@ -4,8 +4,10 @@ function createGrid() {
         const square = document.createElement('div');
         square.classList.add('square');
         square.style.width = `${100 / gridSize}%`;
+        square.setAttribute("data-id", i);
         square.addEventListener('mouseover', mouseOverSquare);
         grid.appendChild(square);
+        mouseOverCount[i] = 0;
     }
 }
 
@@ -21,9 +23,25 @@ function setGridSize() {
     createGrid();
 }
 
-function mouseOverSquare() {
-    this.style.backgroundColor = 'black';
+function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    
+    return `rgb(${r}, ${g}, ${b})`;
 }
+
+function mouseOverSquare() {
+    const dataId = this.getAttribute('data-id');
+    mouseOverCount[dataId] += 1;
+    this.style.backgroundColor = getRandomColor();
+    if (mouseOverCount[dataId] <= 10) {
+        this.style.opacity = 0.1 * mouseOverCount[dataId];
+    }
+    
+}
+
+let mouseOverCount = [];
 
 let gridSize = 16;
 
